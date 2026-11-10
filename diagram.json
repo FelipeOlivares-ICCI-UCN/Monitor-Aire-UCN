@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "author": "AirSense test",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 150, "left": 0, "attrs": {} },
+    { "type": "wokwi-ssd1306", "id": "oled", "top": 0, "left": 60, "attrs": { "i2cAddress": "0x3c" } },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": 380, "left": 0, "attrs": {} },
+    { "type": "wokwi-led", "id": "ledV", "top": 20, "left": 300, "attrs": { "color": "green" } },
+    { "type": "wokwi-led", "id": "ledA", "top": 20, "left": 350, "attrs": { "color": "yellow" } },
+    { "type": "wokwi-led", "id": "ledR", "top": 20, "left": 400, "attrs": { "color": "red" } },
+    { "type": "wokwi-relay-module", "id": "rele", "top": 120, "left": 330, "attrs": {} }
+  ],
+  "connections": [
+    [ "oled:GND", "uno:GND.1", "black", [] ],
+    [ "oled:VCC", "uno:5V", "red", [] ],
+    [ "oled:SCL", "uno:A5", "blue", [] ],
+    [ "oled:SDA", "uno:A4", "green", [] ],
+
+    [ "pot1:GND", "uno:GND.2", "black", [] ],
+    [ "pot1:VCC", "uno:5V", "red", [] ],
+    [ "pot1:SIG", "uno:A0", "orange", [] ],
+
+    [ "ledV:A", "uno:5", "green", [] ],
+    [ "ledV:C", "uno:GND.1", "black", [] ],
+    [ "ledA:A", "uno:6", "gold", [] ],
+    [ "ledA:C", "uno:GND.1", "black", [] ],
+    [ "ledR:A", "uno:7", "red", [] ],
+    [ "ledR:C", "uno:GND.1", "black", [] ],
+
+    [ "rele:VCC", "uno:5V", "red", [] ],
+    [ "rele:GND", "uno:GND.2", "black", [] ],
+    [ "rele:IN", "uno:8", "purple", [] ]
+  ],
+  "dependencies": {}
+}
