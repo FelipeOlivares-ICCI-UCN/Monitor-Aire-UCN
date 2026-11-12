@@ -2,19 +2,24 @@
 
 Monitor Aire es un monitor de calidad del aire basado en Arduino Uno. Lee un sensor de gases **MQ135**, muestra la lectura y el estado del aire en una **pantalla OLED de 128×64**, indica el estado con tres LEDs (verde / amarillo / rojo) y activa un **relé** para encender la ventilación cuando la calidad del aire es crítica.
 
+![Monitor Aire wiring](docs/Diagrama%20Monitor.png)
+
 ## Características
 
 - Período de calentamiento del sensor al iniciar, con mensaje en pantalla
+
 - Lectura del sensor cada segundo, promediando 10 muestras para reducir el ruido
+
 - Tres estados de calidad del aire:
 
-  | Estado | Lectura ADC | LED | Relé (ventilación) |
-  |---|---|---|---|
-  | NORMAL | < 300 | Verde | Apagado |
-  | ALERTA | 300 – 500 | Amarillo | Apagado |
-  | CRÍTICO | > 500 | Rojo | **Encendido** |
+  | Estado  | Lectura ADC | LED      | Relé (ventilación) |
+  | ------- | ----------- | -------- | ------------------ |
+  | NORMAL  | < 300       | Verde    | Apagado            |
+  | ALERTA  | 300 – 500   | Amarillo | Apagado            |
+  | CRÍTICO | > 500       | Rojo     | **Encendido**      |
 
 - Visualización en tiempo real en la OLED: valor ADC y estado actual
+
 - Registro por puerto serie (9600 baudios)
 
 ## Hardware
@@ -28,18 +33,18 @@ Monitor Aire es un monitor de calidad del aire basado en Arduino Uno. Lee un sen
 
 ## Conexiones
 
-| Componente | Pin del componente | Arduino Uno |
-|---|---|---|
-| MQ135 | AO | A0 |
-| MQ135 | VCC / GND | 5V / GND |
-| OLED | SDA | A4 |
-| OLED | SCL | A5 |
-| OLED | VCC / GND | 5V / GND |
-| LED verde | Ánodo (con 220 Ω) | D5 |
-| LED amarillo | Ánodo (con 220 Ω) | D6 |
-| LED rojo | Ánodo (con 220 Ω) | D7 |
-| Relé | IN | D8 |
-| Relé | VCC / GND | 5V / GND |
+| Componente   | Pin del componente | Arduino Uno |
+| ------------ | ------------------ | ----------- |
+| MQ135        | AO                 | A0          |
+| MQ135        | VCC / GND          | 5V / GND    |
+| OLED         | SDA                | A4          |
+| OLED         | SCL                | A5          |
+| OLED         | VCC / GND          | 5V / GND    |
+| LED verde    | Ánodo (con 220 Ω)  | D5          |
+| LED amarillo | Ánodo (con 220 Ω)  | D6          |
+| LED rojo     | Ánodo (con 220 Ω)  | D7          |
+| Relé         | IN                 | D8          |
+| Relé         | VCC / GND          | 5V / GND    |
 
 Los cátodos de los LEDs van a GND.
 
@@ -58,12 +63,12 @@ MonitorAire/
 
 El código es Arduino estándar, así que no depende de un IDE específico. Se puede usar cualquiera de estas opciones:
 
-| Opción | Ventajas | Simulación |
-|---|---|---|
-| **Arduino IDE** | La más simple. Gratis, sin PlatformIO ni Python | No integrada (usar [wokwi.com](https://wokwi.com)) |
-| **VS Code + PlatformIO IDE** | Gratis, usa el mismo `platformio.ini` y la misma estructura del proyecto. Instala PlatformIO automáticamente | Extensión **Wokwi for VS Code** |
-| **wokwi.com** (navegador) | Sin instalar nada, ideal para probar o hacer una demostración | Integrada |
-| **CLion + PlatformIO** | Buen autocompletado y depuración | Plugin **Wokwi Simulator** |
+| Opción                       | Ventajas                                                                                                     | Simulación                                         |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
+| **Arduino IDE**              | La más simple. Gratis, sin PlatformIO ni Python                                                              | No integrada (usar [wokwi.com](https://wokwi.com)) |
+| **VS Code + PlatformIO IDE** | Gratis, usa el mismo `platformio.ini` y la misma estructura del proyecto. Instala PlatformIO automáticamente | Extensión **Wokwi for VS Code**                    |
+| **wokwi.com** (navegador)    | Sin instalar nada, ideal para probar o hacer una demostración                                                | Integrada                                          |
+| **CLion + PlatformIO**       | Buen autocompletado y depuración                                                                             | Plugin **Wokwi Simulator**                         |
 
 Librerías necesarias:
 
@@ -138,25 +143,25 @@ También se puede simular en el navegador en [wokwi.com](https://wokwi.com): cre
 
 ## Pruebas
 
-| Prueba | Resultado esperado |
-|---|---|
-| Inicio | La OLED muestra "Calentando sensor..." y ningún LED está encendido |
-| Lectura < 300 | LED verde, "ESTADO: NORMAL", relé apagado |
-| Lectura 300 – 500 | LED amarillo, "ESTADO: ALERTA", relé apagado |
-| Lectura > 500 | LED rojo, "ESTADO: CRITICO", relé encendido |
-| La lectura vuelve a bajar de 300 | Se apagan el LED rojo y el relé |
-| Monitor serie | Una línea por segundo, por ejemplo `Lectura MQ135: 412 \| Estado: ADVERTENCIA` |
+| Prueba                           | Resultado esperado                                                             |
+| -------------------------------- | ------------------------------------------------------------------------------ |
+| Inicio                           | La OLED muestra "Calentando sensor..." y ningún LED está encendido             |
+| Lectura < 300                    | LED verde, "ESTADO: NORMAL", relé apagado                                      |
+| Lectura 300 – 500                | LED amarillo, "ESTADO: ALERTA", relé apagado                                   |
+| Lectura > 500                    | LED rojo, "ESTADO: CRITICO", relé encendido                                    |
+| La lectura vuelve a bajar de 300 | Se apagan el LED rojo y el relé                                                |
+| Monitor serie                    | Una línea por segundo, por ejemplo `Lectura MQ135: 412 \| Estado: ADVERTENCIA` |
 
 ## Configuración
 
 Estas constantes, al inicio de `main.cpp`, controlan el funcionamiento del sistema:
 
-| Constante | Valor por defecto | Descripción |
-|---|---|---|
-| `LIMITE_VERDE` | `300` | Límite superior del estado NORMAL |
-| `LIMITE_ROJO` | `500` | Límite superior del estado ALERTA |
-| `CALENTAMIENTO` | `60000` ms | Tiempo de calentamiento del sensor |
-| `INTERVALO` | `1000` ms | Tiempo entre lecturas |
+| Constante       | Valor por defecto | Descripción                        |
+| --------------- | ----------------- | ---------------------------------- |
+| `LIMITE_VERDE`  | `300`             | Límite superior del estado NORMAL  |
+| `LIMITE_ROJO`   | `500`             | Límite superior del estado ALERTA  |
+| `CALENTAMIENTO` | `60000` ms        | Tiempo de calentamiento del sensor |
+| `INTERVALO`     | `1000` ms         | Tiempo entre lecturas              |
 
 Los umbrales son **valores ADC sin procesar (0–1023), no ppm**. Son valores de prueba y deben calibrarse: dejar que el sensor se estabilice en aire limpio, anotar su lectura base y ajustar los límites en función de ese valor.
 
